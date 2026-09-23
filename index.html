@@ -1,1 +1,519 @@
-<!DOCTYPE html> <html> <head><title>Eren</title></head> <body> <h1>Merhaba, ben Eren</h1> <p>Bu benim ilk GitHub Pages sitem.</p> </body> </html>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lena Marsh — Photographer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #111010;
+      --surface:  #1a1919;
+      --border:   #2e2c2c;
+      --muted:    #6b6868;
+      --text:     #d4d0cc;
+      --bright:   #f0ebe4;
+      --accent:   #b8a898;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.6rem 3rem;
+      background: linear-gradient(to bottom, rgba(17,16,16,.95) 60%, transparent);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 300;
+      letter-spacing: .08em;
+      color: var(--bright);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.4rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .8rem;
+      letter-spacing: .12em;
+      transition: color .2s;
+    }
+
+    .nav-links a:hover { color: var(--bright); }
+
+    /* HERO */
+    .hero {
+      height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+    }
+
+    .hero-image {
+      background: url('https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=900&q=80') center/cover no-repeat;
+      filter: brightness(.75) contrast(1.05);
+    }
+
+    .hero-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 4rem 4rem 5rem 4.5rem;
+      background: var(--surface);
+    }
+
+    .hero-text h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 5vw, 5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--bright);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-text h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-text p {
+      max-width: 34ch;
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: .75rem 2rem;
+      border: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      font-size: .78rem;
+      letter-spacing: .1em;
+      transition: border-color .2s, color .2s;
+      align-self: flex-start;
+    }
+
+    .btn:hover {
+      border-color: var(--accent);
+      color: var(--bright);
+    }
+
+    /* GRID */
+    .section {
+      padding: 6rem 3rem;
+    }
+
+    .section-label {
+      font-size: .72rem;
+      letter-spacing: .18em;
+      color: var(--muted);
+      margin-bottom: 3rem;
+      border-left: 1px solid var(--border);
+      padding-left: .9rem;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .photo-item {
+      position: relative;
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .photo-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(.85) contrast(1.05);
+      transition: transform .5s ease, filter .5s ease;
+      display: block;
+    }
+
+    .photo-item:hover img {
+      transform: scale(1.04);
+      filter: brightness(.65) contrast(1.1);
+    }
+
+    .photo-caption {
+      position: absolute;
+      bottom: 1.2rem;
+      left: 1.2rem;
+      opacity: 0;
+      transition: opacity .3s;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--bright);
+    }
+
+    .photo-item:hover .photo-caption { opacity: 1; }
+
+    /* WIDE PHOTO */
+    .wide-photo {
+      width: 100%;
+      height: 60vh;
+      object-fit: cover;
+      filter: brightness(.7) contrast(1.1);
+      display: block;
+    }
+
+    /* ABOUT */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .about-img {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      filter: brightness(.8) grayscale(.2);
+    }
+
+    .about-content h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3vw, 3.2rem);
+      font-weight: 300;
+      color: var(--bright);
+      line-height: 1.2;
+      margin-bottom: 2rem;
+    }
+
+    .about-content p {
+      color: var(--muted);
+      max-width: 52ch;
+      margin-bottom: 1.2rem;
+      font-size: .9rem;
+    }
+
+    .stats {
+      display: flex;
+      gap: 3rem;
+      margin-top: 2.5rem;
+      padding-top: 2.5rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--bright);
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: .75rem;
+      color: var(--muted);
+      letter-spacing: .08em;
+      margin-top: .3rem;
+    }
+
+    /* SERVICES */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+    }
+
+    .service-item {
+      background: var(--surface);
+      padding: 2.5rem 2rem;
+    }
+
+    .service-item h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: var(--bright);
+      margin-bottom: 1rem;
+    }
+
+    .service-item p {
+      font-size: .85rem;
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .service-price {
+      margin-top: 1.5rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--accent);
+    }
+
+    /* CONTACT */
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+
+    .contact-inner h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3vw, 3.5rem);
+      font-weight: 300;
+      color: var(--bright);
+      line-height: 1.15;
+    }
+
+    .contact-inner p {
+      color: var(--muted);
+      font-size: .88rem;
+      margin-top: 1rem;
+      max-width: 40ch;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: .9rem 1.1rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .85rem;
+      font-weight: 300;
+      outline: none;
+      transition: border-color .2s;
+      resize: none;
+    }
+
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: var(--accent);
+    }
+
+    .contact-form textarea { height: 120px; }
+
+    .contact-form button {
+      padding: .85rem 2rem;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--bright);
+      font-family: 'DM Sans', sans-serif;
+      font-size: .8rem;
+      letter-spacing: .1em;
+      cursor: pointer;
+      transition: background .2s;
+      align-self: flex-start;
+    }
+
+    .contact-form button:hover {
+      background: rgba(184,168,152,.12);
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: .75rem;
+      color: var(--muted);
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+
+    footer a:hover { color: var(--bright); }
+
+    .footer-links { display: flex; gap: 1.8rem; }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .nav-links { gap: 1.2rem; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-image { height: 45vh; }
+      .hero-text { padding: 2.5rem 1.5rem; }
+      .section { padding: 4rem 1.5rem; }
+      .photo-grid { grid-template-columns: 1fr 1fr; }
+      .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .contact-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav>
+    <a class="nav-logo" href="#">Lena Marsh</a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-image"></div>
+    <div class="hero-text">
+      <h1>Light,<br /><em>shadow</em>,<br />story.</h1>
+      <p>Portrait and editorial photographer based in Istanbul. Available for commissions worldwide.</p>
+      <a href="#work" class="btn">View Work</a>
+    </div>
+  </section>
+
+  <!-- WORK -->
+  <section class="section" id="work">
+    <p class="section-label">Selected Work</p>
+    <div class="photo-grid">
+      <div class="photo-item">
+        <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=600&q=80" alt="Portrait" />
+        <span class="photo-caption">Quiet Light, 2024</span>
+      </div>
+      <div class="photo-item">
+        <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=600&q=80" alt="Portrait" />
+        <span class="photo-caption">Still Morning, 2024</span>
+      </div>
+      <div class="photo-item">
+        <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=600&q=80" alt="Portrait" />
+        <span class="photo-caption">Dusk Study, 2023</span>
+      </div>
+      <div class="photo-item">
+        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=600&q=80" alt="Portrait" />
+        <span class="photo-caption">Interior Light, 2023</span>
+      </div>
+      <div class="photo-item">
+        <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=600&q=80" alt="Portrait" />
+        <span class="photo-caption">Golden Hour, 2023</span>
+      </div>
+      <div class="photo-item">
+        <img src="https://images.unsplash.com/photo-1552058544-f2b08422138a?w=600&q=80" alt="Portrait" />
+        <span class="photo-caption">Window Series, 2022</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- WIDE -->
+  <img class="wide-photo" src="https://images.unsplash.com/photo-1500917293891-ef795e70e1f6?w=1400&q=80" alt="Editorial" />
+
+  <!-- ABOUT -->
+  <section class="section" id="about">
+    <p class="section-label">About</p>
+    <div class="about-grid">
+      <img class="about-img" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&q=80" alt="Lena Marsh" />
+      <div class="about-content">
+        <h2>Capturing what light<br />reveals about people.</h2>
+        <p>I work with available light whenever possible — not because it is easier, but because it is honest. It shows people as they are, in moments that would have passed without a camera.</p>
+        <p>My work has appeared in Vogue Turkey, Elle, and various editorial publications across Europe. I am based in Istanbul and available for travel worldwide.</p>
+        <div class="stats">
+          <div>
+            <div class="stat-num">12</div>
+            <div class="stat-label">Years active</div>
+          </div>
+          <div>
+            <div class="stat-num">340+</div>
+            <div class="stat-label">Projects completed</div>
+          </div>
+          <div>
+            <div class="stat-num">18</div>
+            <div class="stat-label">Countries</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="section" id="services" style="padding-top: 0;">
+    <p class="section-label">Services</p>
+    <div class="services-grid">
+      <div class="service-item">
+        <h3>Portrait Sessions</h3>
+        <p>Individual or couples portraits. Studio or location. Two-hour session with full post-processing and digital delivery.</p>
+        <div class="service-price">From €280</div>
+      </div>
+      <div class="service-item">
+        <h3>Editorial</h3>
+        <p>Magazine features, lookbooks, and brand campaigns. Full production support available including styling and location scouting.</p>
+        <div class="service-price">Day rate on request</div>
+      </div>
+      <div class="service-item">
+        <h3>Events</h3>
+        <p>Corporate events, private gatherings, and cultural openings. Discreet, documentary-style coverage with same-week delivery.</p>
+        <div class="service-price">From €450</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section" id="contact">
+    <p class="section-label">Contact</p>
+    <div class="contact-inner">
+      <div>
+        <h2>Let's make something together.</h2>
+        <p>For bookings, collaborations, or general enquiries — reach out below or email directly at hello@lenamarsh.com</p>
+      </div>
+      <div class="contact-form">
+        <input type="text" placeholder="Your name" />
+        <input type="email" placeholder="Email address" />
+        <textarea placeholder="Tell me about your project…"></textarea>
+        <button type="button">Send message</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2024 Lena Marsh</span>
+    <div class="footer-links">
+      <a href="#">Instagram</a>
+      <a href="#">Behance</a>
+      <a href="#">LinkedIn</a>
+    </div>
+  </footer>
+
+</body>
+</html>
